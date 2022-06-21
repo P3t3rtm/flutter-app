@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +35,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     //await prefs.setString('jwt', ''); //todo remove this line after testing
 
     userJwtToken = (prefs.getString('jwt') ?? "");
-
+    userCurrentPage = (prefs.getString('page') ?? "production");
     if (userJwtToken != "") {
       final authResponse = await auth();
       if (authResponse.statusCode == 200) {
@@ -42,7 +44,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
         //
         // }
         // userRefreshToken = authResponse.body;
-        Navigator.of(context).pushReplacementNamed('/main');
+        Navigator.of(context).pushReplacementNamed('/$userCurrentPage');
         return;
       }
     }

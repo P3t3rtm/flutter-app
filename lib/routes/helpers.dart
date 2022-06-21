@@ -8,7 +8,7 @@ double buttonHeight = 40.0;
 double formHeight = 65.0;
 double cursorHeight = 23.0;
 
-Color themeColor = const Color(0xFFeb1700);
+Color themeColor = Color.fromARGB(255, 57, 173, 53);
 
 bool mainCartHasItems = true;
 bool mainIsUSD = false;
@@ -22,6 +22,7 @@ String userLastName = '';
 String userEmail = '';
 String userJwtToken = '';
 String userRefreshToken = '';
+String userCurrentPage = '';
 
 //TODO make new keys and hide from github
 String rushHourApiKey = 'Z81jFHhfuq712hadaAjudqoabbffhgfjqi71K';
@@ -31,7 +32,7 @@ String rushHourApiKey = 'Z81jFHhfuq712hadaAjudqoabbffhgfjqi71K';
 // bool emailUsed = false;
 String apiUrl =
     "http://10.0.2.2:1337/"; //todo change these to the ip address of the server
-String imgUrl = "https://leechee.bz/zfoilhfakh5wadkn/";
+String imgUrl = "http://10.0.2.2:1337/zfoilhfakh5wadkn/";
 String verifyEmail = '';
 late MediaQueryData queryData;
 

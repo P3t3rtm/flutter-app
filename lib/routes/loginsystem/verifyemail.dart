@@ -163,7 +163,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage>
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userJwtToken = jsonDecode(verifyResponse.body)['jwtToken'];
         await prefs.setString('jwt', userJwtToken);
-        Navigator.pushReplacementNamed(context, '/main');
+        Navigator.pushReplacementNamed(context, '/auth');
       } else if (verifyResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(

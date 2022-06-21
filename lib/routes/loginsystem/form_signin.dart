@@ -232,7 +232,7 @@ class SignInFormState extends State<SignInForm>
       if (signinResponse.statusCode == 200) {
         userJwtToken = jsonDecode(signinResponse.body)['jwtToken'];
         await prefs.setString('jwt', userJwtToken);
-        Navigator.pushReplacementNamed(context, '/main');
+        Navigator.pushReplacementNamed(context, '/auth');
       } else if (signinResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password does not match account.')),

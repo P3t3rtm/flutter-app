@@ -1,11 +1,9 @@
-import 'package:makemyown/routes/main/sample.dart';
+import '/routes/main/production/productionview.dart';
 
-import 'routes/main/menupage.dart';
 import 'routes/loginsystem/auth_splash.dart';
 import 'package:flutter/material.dart';
 import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
-import 'routes/main/mainpage.dart';
 
 void main() {
   runApp(
@@ -27,10 +25,8 @@ void main() {
         '/': (context) => const Splash(),
         '/auth': (context) => const AuthPage(),
 
-        '/main': (context) => const MainPage(),
-        '/menu': (context) => const MenuPage(),
+        '/production': (context) => const ProductionView(),
 
-        '/sample': (context) => SamplePage(),
         //'/menuitem': (context) => const MenuItemPage(),
 
         //'/orders': (context) => const OrdersPage(),
