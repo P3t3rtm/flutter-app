@@ -1,9 +1,9 @@
 import 'package:makemyown/routes/main/sample.dart';
 
 import 'routes/main/menupage.dart';
-import 'routes/splashscreen.dart';
+import 'routes/loginsystem/auth_splash.dart';
 import 'package:flutter/material.dart';
-import 'routes/loginsystem/auth.dart';
+import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
 import 'routes/main/mainpage.dart';
 

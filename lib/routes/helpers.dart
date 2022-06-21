@@ -21,14 +21,12 @@ String userFirstName = '';
 String userLastName = '';
 String userEmail = '';
 String userJwtToken = '';
-String googleIdToken = '';
+String userRefreshToken = '';
 
 //TODO make new keys and hide from github
-String googleMapsApiKey = 'AIzaSyDudSdXktPMmlm82K9JNMtqwgDf4XUBhG4';
 String rushHourApiKey = 'Z81jFHhfuq712hadaAjudqoabbffhgfjqi71K';
 
 // //global variables
-bool noAddress = true;
 // bool isLoading = false;
 // bool emailUsed = false;
 String apiUrl =

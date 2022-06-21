@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'helpers.dart';
+import '../helpers.dart';
 import 'package:http/http.dart' as http;
+
+//todo add biometric unlock after 1 hour of inactivity
+
+//this page is used to show the splash screen
+//also used to check if user's jwt token is valid, meaning user is logged in or not
+//if user is logged in, then he/she is redirected to main page
+//if user is not logged in, then he/she is redirected to login page
 
 //secondary loading screen example implementation
 //https://github.com/jonbhanson/flutter_native_splash/blob/master/example/lib/main.dart
@@ -27,38 +34,24 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 
     userJwtToken = (prefs.getString('jwt') ?? "");
 
-    //_hasAddress = false; // remove this line after testing
-    //return Navigator.of(context).pushReplacementNamed('/main');
-
     if (userJwtToken != "") {
-      //http auth page, if 200, then go to home page, 201 then add address,
-      //202, then edit phone, 203 then edit phone & set noaddress = true, anything else then /auth
-      // if (_hasAddress) {
-      //   Navigator.of(context).pushReplacementNamed('/main');
-      // } else {
-      //   Navigator.of(context).pushReplacementNamed('/addaddress');
-      // }
       final authResponse = await auth();
       if (authResponse.statusCode == 200) {
+        // todo maybe implement refresh tokens?
+        // if(prefs.getString('refresh') != authResponse.body) {
+        //
+        // }
+        // userRefreshToken = authResponse.body;
         Navigator.of(context).pushReplacementNamed('/main');
-      } else if (authResponse.statusCode == 201) {
-        Navigator.of(context).pushReplacementNamed('/addaddress');
-      } else if (authResponse.statusCode == 202) {
-        Navigator.of(context).pushReplacementNamed('/editphone');
-      } else if (authResponse.statusCode == 203) {
-        noAddress = true;
-        Navigator.of(context).pushReplacementNamed('/editphone');
-      } else {
-        Navigator.of(context).pushReplacementNamed('/auth');
+        return;
       }
-    } else {
-      Navigator.of(context).pushReplacementNamed('/auth');
     }
+    Navigator.of(context).pushReplacementNamed('/auth');
   }
 
   @override
   void afterFirstLayout(BuildContext context) async {
-    //await Future.delayed(const Duration(seconds: 5)); //fake delay
+    await Future.delayed(const Duration(seconds: 5)); //todo remove fake delay
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -66,6 +59,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     checkFirstSeen();
   }
 
+//this is the loading screen graphics
   @override
   Widget build(BuildContext context) {
     queryData = MediaQuery.of(context);
@@ -100,7 +94,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Future<http.Response> auth() async {
     try {
       return await http.get(
-        Uri.parse(apiUrl + 'user/auth?jwtToken=$userJwtToken'),
+        Uri.parse('${apiUrl}user/auth?jwtToken=$userJwtToken'),
         headers: {"api": rushHourApiKey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {

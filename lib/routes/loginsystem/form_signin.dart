@@ -112,26 +112,6 @@ class SignInFormState extends State<SignInForm>
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  //forget password button
-                  Container(
-                      height: 40,
-                      width: 0.5 * queryData.size.width,
-                      padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                            style: ElevatedButton.styleFrom(
-                              splashFactory: NoSplash.splashFactory,
-                              primary: Colors.transparent,
-                              onPrimary: Colors.black38,
-                              textStyle: const TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w500),
-                            ),
-                            onPressed: () {
-                              //todo email verification, password reset form
-                            },
-                            child: const Text('Forgot your password?')),
-                      )),
                 ],
               ),
               const SizedBox(height: 0),
@@ -253,13 +233,6 @@ class SignInFormState extends State<SignInForm>
         userJwtToken = jsonDecode(signinResponse.body)['jwtToken'];
         await prefs.setString('jwt', userJwtToken);
         Navigator.pushReplacementNamed(context, '/main');
-      }
-      //address not found; change to add address page
-      else if (signinResponse.statusCode == 201) {
-        userJwtToken = jsonDecode(signinResponse.body)['jwtToken'];
-        await prefs.setString('jwt', userJwtToken);
-        noAddress = true;
-        Navigator.pushReplacementNamed(context, '/addaddress');
       } else if (signinResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password does not match account.')),
@@ -267,6 +240,12 @@ class SignInFormState extends State<SignInForm>
       } else if (signinResponse.statusCode == 404) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Email does not exist in system.')),
+        );
+      }
+      //else if 405, email unverified
+      else if (signinResponse.statusCode == 405) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email is not verified.')),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -280,7 +259,7 @@ class SignInFormState extends State<SignInForm>
   Future<http.Response> signin(email, password) async {
     try {
       return await http.get(
-        Uri.parse(apiUrl + 'user/login?email=$email&password=$password'),
+        Uri.parse('${apiUrl}user/login?email=$email&password=$password'),
         headers: {"api": rushHourApiKey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
