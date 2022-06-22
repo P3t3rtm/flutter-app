@@ -38,9 +38,9 @@ dependencies:
   shared_preferences: ^2.0.15
   after_layout: ^1.2.0
   cached_network_image: ^3.2.1
-  scroll_to_index: ^3.0.1
   mask_text_input_formatter: ^2.3.0
   email_validator: ^2.0.1
+  scrollable_list_tabview: ^0.2.0-nullsafety
 
 dev_dependencies:
   flutter_test:

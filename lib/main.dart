@@ -4,6 +4,7 @@ import 'routes/loginsystem/auth_splash.dart';
 import 'package:flutter/material.dart';
 import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
+import 'routes/main/production/productionadd.dart';
 
 void main() {
   runApp(
@@ -27,6 +28,7 @@ void main() {
         '/login': (context) => const AuthPage(),
 
         '/Production': (context) => const ProductionView(),
+        '/Production Add': (context) => const ProductionAdd(),
 
         //'/menuitem': (context) => const MenuItemPage(),
 
