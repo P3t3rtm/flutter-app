@@ -38,11 +38,38 @@ class _ProductionViewState extends State<ProductionView> {
         child: Scaffold(
           backgroundColor: Colors.white,
           drawer: const LeftDrawer(),
+          //add a floatingactionbutton to push to productionadd page
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              //Navigator.of(context).pushNamed('/productionadd');
+            },
+            child: const Icon(
+              Icons.add,
+              size: 35,
+            ),
+            backgroundColor: themeColor,
+          ),
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                //toolbarHeight: 20,
-                //collapsedHeight: 30,
+                bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(0.0),
+                    child: Container(
+                      color: Colors.green,
+                      height: 15.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            '(OK: 5281 ms)',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    )),
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
                 pinned: false,
@@ -65,67 +92,12 @@ class _ProductionViewState extends State<ProductionView> {
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  title: TextButton(
-                    clipBehavior: Clip.hardEdge,
-                    style: ElevatedButton.styleFrom(
-                      splashFactory: InkSplash.splashFactory,
-                      primary: Colors.transparent,
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/selectaddress');
-                    },
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.35,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 13,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Delivery',
-                                    style: TextStyle(
-                                        fontSize: 9,
-                                        fontWeight: FontWeight.w800,
-                                        color: themeColor),
-                                  ),
-                                ),
-                                Center(
-                                  child: SizedBox(
-                                    width: 8,
-                                    child: Container(
-                                      margin: const EdgeInsets.only(top: 2),
-                                      child: FittedBox(
-                                        fit: BoxFit.none,
-                                        child: Icon(
-                                          Icons.arrow_drop_down_rounded,
-                                          color: themeColor,
-                                          size: 16,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Text(
-                    'All Restaurants',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  title: Text(
+                    userCurrentPage,
+                    style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black),
                   ),
                 ),
               ),
@@ -135,7 +107,8 @@ class _ProductionViewState extends State<ProductionView> {
                     //make the following container a tapable card
                     return GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/menu');
+                        //Navigator.pushNamed(context, '/productiondetailsview');
+                        print('pressed $index');
                       },
                       child: Container(
                         clipBehavior: Clip.hardEdge,
@@ -157,148 +130,54 @@ class _ProductionViewState extends State<ProductionView> {
                           ],
                         ),
                         margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                        height: 275,
+                        height: 70,
                         width: queryData.size.width,
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 200,
-                              child: SizedBox.expand(
-                                child: FittedBox(
-                                  fit: BoxFit.cover,
-                                  clipBehavior: Clip.hardEdge,
-                                  child: CachedNetworkImage(
-                                    imageUrl: "${imgUrl}2.png",
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      padding: EdgeInsets.all(0.5 *
-                                          queryData.size
-                                              .width), //the bigger the number the smaller the loading bar
-                                      child: const Icon(
-                                          Icons.report_problem_outlined),
+                            //warning icon
+                            Container(
+                              margin: const EdgeInsets.only(left: 50),
+                              child: const Icon(
+                                Icons.watch_later_outlined,
+                                color: Colors.orangeAccent,
+                                size: 30,
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                const SizedBox(height: 15),
+                                Container(
+                                  width: queryData.size.width * 0.5 - 15,
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    'Quantity: $index',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Container(
+                                  width: queryData.size.width * 0.5 - 15,
+                                  padding: const EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    'Peter Tan',
+                                    style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 75,
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 15),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: queryData.size.width * 0.5 - 15,
-                                        padding:
-                                            const EdgeInsets.only(left: 15),
-                                        child: Text(
-                                          'Lee Chee',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15),
-                                        ),
-                                      ),
-                                      //todo implement rating system 4.3 stars icon
-                                      Container(
-                                        width: queryData.size.width * 0.5 - 15,
-                                        padding:
-                                            const EdgeInsets.only(right: 15),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              '', //'4.3',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black54),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.only(
-                                                  left: 3, bottom: 2),
-                                              height: 15,
-                                              child: const FittedBox(
-                                                fit: BoxFit.none,
-                                                // child: Icon(
-                                                //   Icons.star_rate_rounded,
-                                                //   color: Colors.black54,
-                                                //   size: 20,
-                                                // ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: queryData.size.width * 0.5 - 15,
-                                        padding:
-                                            const EdgeInsets.only(left: 15),
-                                        child: Text(
-                                          'Fried Chicken, Fingers, Steak, Chowmein, Burgers',
-                                          style: const TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: queryData.size.width * 0.5 - 15,
-                                        padding:
-                                            const EdgeInsets.only(right: 15),
-                                        // child: Text(
-                                        //   '+ 1,242 ratings',
-                                        //   textAlign: TextAlign.right,
-                                        //   style: const TextStyle(
-                                        //       color: Colors.black54,
-                                        //       fontWeight: FontWeight.w500),
-                                        // ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              ],
                             ),
                           ],
                         ),
                       ),
                     );
                   },
-                  childCount: 1,
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Row(
-                    children: const [
-                      Expanded(
-                          child: Divider(
-                        height: 0,
-                        thickness: 1,
-                        endIndent: 15,
-                      )),
-                      Text(
-                        'more coming soon..',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black54),
-                      ),
-                      Expanded(
-                          child: Divider(
-                        height: 0,
-                        thickness: 1,
-                        indent: 15,
-                      )),
-                    ],
-                  ),
+                  childCount: 50,
                 ),
               ),
             ],

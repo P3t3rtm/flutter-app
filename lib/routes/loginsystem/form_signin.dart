@@ -232,7 +232,7 @@ class SignInFormState extends State<SignInForm>
       if (signinResponse.statusCode == 200) {
         userJwtToken = jsonDecode(signinResponse.body)['jwtToken'];
         await prefs.setString('jwt', userJwtToken);
-        Navigator.pushReplacementNamed(context, '/auth');
+        Navigator.pushReplacementNamed(context, '/');
       } else if (signinResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password does not match account.')),
@@ -260,7 +260,7 @@ class SignInFormState extends State<SignInForm>
     try {
       return await http.get(
         Uri.parse('${apiUrl}user/login?email=$email&password=$password'),
-        headers: {"api": rushHourApiKey, "jwt": ""},
+        headers: {"api": xapikey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       return http.Response('', 500);

@@ -35,7 +35,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     //await prefs.setString('jwt', ''); //todo remove this line after testing
 
     userJwtToken = (prefs.getString('jwt') ?? "");
-    userCurrentPage = (prefs.getString('page') ?? "production");
+    userCurrentPage = (prefs.getString('page') ?? "Production");
     if (userJwtToken != "") {
       final authResponse = await auth();
       if (authResponse.statusCode == 200) {
@@ -48,12 +48,12 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
         return;
       }
     }
-    Navigator.of(context).pushReplacementNamed('/auth');
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
   void afterFirstLayout(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 5)); //todo remove fake delay
+    await Future.delayed(const Duration(seconds: 2)); //todo remove fake delay
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -97,7 +97,7 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     try {
       return await http.get(
         Uri.parse('${apiUrl}user/auth?jwtToken=$userJwtToken'),
-        headers: {"api": rushHourApiKey, "jwt": ""},
+        headers: {"api": xapikey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       return http.Response('', 500);

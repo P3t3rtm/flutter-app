@@ -163,7 +163,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage>
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userJwtToken = jsonDecode(verifyResponse.body)['jwtToken'];
         await prefs.setString('jwt', userJwtToken);
-        Navigator.pushReplacementNamed(context, '/auth');
+        Navigator.pushReplacementNamed(context, '/');
       } else if (verifyResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
@@ -185,7 +185,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage>
     try {
       return await http.get(
         Uri.parse('${apiUrl}user/confirm?email=$email&token=$token'),
-        headers: {"api": rushHourApiKey, "jwt": ""},
+        headers: {"api": xapikey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       return http.Response('', 500);

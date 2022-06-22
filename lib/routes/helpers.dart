@@ -25,7 +25,7 @@ String userRefreshToken = '';
 String userCurrentPage = '';
 
 //TODO make new keys and hide from github
-String rushHourApiKey = 'Z81jFHhfuq712hadaAjudqoabbffhgfjqi71K';
+String xapikey = 'Z81jFHhfuq712hadaAjudqoabbffhgfjqi71K';
 
 // //global variables
 // bool isLoading = false;

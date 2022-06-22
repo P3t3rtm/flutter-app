@@ -255,7 +255,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
                                 await SharedPreferences.getInstance();
                             userJwtToken = '';
                             await prefs.setString('jwt', '');
-                            Navigator.pushReplacementNamed(context, '/auth');
+                            Navigator.pushReplacementNamed(context, '/login');
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

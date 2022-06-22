@@ -350,7 +350,7 @@ class SignUpFormState extends State<SignUpForm>
       return await http.get(
         Uri.parse(
             '${apiUrl}user/register?firstName=$firstname&lastName=$lastname&password=$password&email=$email'),
-        headers: {"api": rushHourApiKey, "jwt": ""},
+        headers: {"api": xapikey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       print(e);

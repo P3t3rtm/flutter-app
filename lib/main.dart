@@ -23,9 +23,10 @@ void main() {
       initialRoute: '/',
       routes: {
         '/': (context) => const Splash(),
-        '/auth': (context) => const AuthPage(),
 
-        '/production': (context) => const ProductionView(),
+        '/login': (context) => const AuthPage(),
+
+        '/Production': (context) => const ProductionView(),
 
         //'/menuitem': (context) => const MenuItemPage(),
 
