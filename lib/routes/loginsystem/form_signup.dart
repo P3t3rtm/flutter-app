@@ -355,7 +355,6 @@ class SignUpFormState extends State<SignUpForm>
         headers: {"api": xapikey, "jwt": ""},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
-      print(e);
       return http.Response('', 500);
     }
   }

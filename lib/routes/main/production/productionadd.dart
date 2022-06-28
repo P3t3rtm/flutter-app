@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:makemyown/routes/helpers.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:scrollable_list_tabview/scrollable_list_tabview.dart';
 
 class ProductionAdd extends StatefulWidget {
@@ -40,7 +39,7 @@ class _ProductionAddState extends State<ProductionAdd> {
   void GroupProducts() async {
     final fetchproductsResponse = await fetchproducts();
     if (fetchproductsResponse.statusCode != 200) return;
-    List<Product> products = (json.decode(fetchproductsResponse.body) as List)
+    products = (json.decode(fetchproductsResponse.body) as List)
         .map((data) => Product.fromJson(data))
         .toList();
     //group products by category
@@ -757,34 +756,4 @@ class _ProductionAddState extends State<ProductionAdd> {
       ),
     );
   }
-
-  Future<http.Response> fetchproducts() async {
-    try {
-      return await http.get(
-        Uri.parse('${apiUrl}production/fetchproducts'),
-        headers: {"api": xapikey, "jwt": userJwtToken},
-      ).timeout(const Duration(seconds: 5));
-    } catch (e) {
-      return http.Response('', 500);
-    }
-  }
-}
-
-class Product {
-  final String name;
-  final String category;
-  final int id;
-
-  Product(this.name, this.category, this.id);
-
-  Product.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        category = json['category'],
-        id = json['id'];
-
-  // Map<String, dynamic> toJson() => {
-  //       'name': name,
-  //       'category': category,
-  //       'id': id,
-  //     };
 }

@@ -14,9 +14,9 @@ class ProductionView extends StatefulWidget {
 
 class _ProductionViewState extends State<ProductionView> {
   var userMap = {};
-  var lotMap = {};
+
   var quantityMap = {};
-  List<Production> productions = [];
+
   List<User> users = [];
 
   //late Timer timer;
@@ -40,15 +40,19 @@ class _ProductionViewState extends State<ProductionView> {
   void fetchdata() async {
     final fetchProductionResponse = await fetchproduction();
     final fetchUserResponse = await fetchusers();
+    final fetchProductsResponse = await fetchproducts();
     if (fetchProductionResponse.statusCode != 200 ||
-        fetchUserResponse.statusCode != 200) return;
+        fetchUserResponse.statusCode != 200 ||
+        fetchProductsResponse.statusCode != 200) return;
     productions = (json.decode(fetchProductionResponse.body) as List)
         .map((data) => Production.fromJson(data))
         .toList();
     users = (json.decode(fetchUserResponse.body) as List)
         .map((data) => User.fromJson(data))
         .toList();
-
+    products = (json.decode(fetchProductsResponse.body) as List)
+        .map((data) => Product.fromJson(data))
+        .toList();
     //group users by id
 
     for (var user in users) {
@@ -69,12 +73,6 @@ class _ProductionViewState extends State<ProductionView> {
         quantityMap[production.lotNumber] += production.quantity;
       }
     }
-    print(lotMap);
-    // print(quantityMap);
-    // print(userMap);
-    print(lotMap.length);
-    //print the first entry of lotMap
-    print(lotMap.values.first);
 
     setState(() {});
   }
@@ -160,8 +158,8 @@ class _ProductionViewState extends State<ProductionView> {
                     //make the following container a tapable card
                     return GestureDetector(
                       onTap: () {
-                        //Navigator.pushNamed(context, '/productiondetailsview');
-                        print(productions[index].isConfirmed);
+                        productionCurrentLot = lotMap.keys.elementAt(index);
+                        Navigator.pushNamed(context, '/Production Details');
                       },
                       child: Container(
                         clipBehavior: Clip.hardEdge,
@@ -256,17 +254,6 @@ class _ProductionViewState extends State<ProductionView> {
     );
   }
 
-  Future<http.Response> fetchproduction() async {
-    try {
-      return await http.get(
-        Uri.parse('${apiUrl}production/fetchproduction'),
-        headers: {"api": xapikey, "jwt": userJwtToken},
-      ).timeout(const Duration(seconds: 5));
-    } catch (e) {
-      return http.Response('', 500);
-    }
-  }
-
   Future<http.Response> fetchusers() async {
     try {
       return await http.get(
@@ -292,26 +279,4 @@ class User {
         lastName = json['lastName'],
         id = json['id'],
         colorID = json['colorID'];
-}
-
-class Production {
-  final int id;
-  final int lotNumber;
-  final int quantity;
-  final int productID;
-  final int userID;
-  final int timestamp;
-  final bool isConfirmed;
-
-  Production(this.lotNumber, this.quantity, this.productID, this.userID,
-      this.timestamp, this.id, this.isConfirmed);
-
-  Production.fromJson(Map<String, dynamic> json)
-      : lotNumber = json['lotNumber'],
-        quantity = json['quantity'],
-        id = json['id'],
-        productID = json['productID'],
-        userID = json['userID'],
-        timestamp = json['createdAt'],
-        isConfirmed = json['isConfirmed'];
 }

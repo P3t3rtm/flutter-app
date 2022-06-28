@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -11,10 +13,10 @@ class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({Key? key}) : super(key: key);
 
   @override
-  _VerifyEmailPageState createState() => _VerifyEmailPageState();
+  VerifyEmailPageState createState() => VerifyEmailPageState();
 }
 
-class _VerifyEmailPageState extends State<VerifyEmailPage>
+class VerifyEmailPageState extends State<VerifyEmailPage>
     with AutomaticKeepAliveClientMixin<VerifyEmailPage> {
   @override
   bool get wantKeepAlive => true;

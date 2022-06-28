@@ -6,6 +6,7 @@ import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
 import 'routes/main/production/productionadd.dart';
 import 'routes/main/production/productionconfirm.dart';
+import 'routes/main/production/productiondetailsview.dart';
 
 void main() {
   runApp(
@@ -31,7 +32,7 @@ void main() {
         '/Production': (context) => const ProductionView(),
         '/Production Add': (context) => const ProductionAdd(),
         '/Production Confirm': (context) => const ProductionConfirm(),
-
+        '/Production Details': (context) => const ProductionDetails(),
         //'/menuitem': (context) => const MenuItemPage(),
 
         //'/orders': (context) => const OrdersPage(),

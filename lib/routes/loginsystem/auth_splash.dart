@@ -25,10 +25,10 @@ class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
 
   @override
-  _SplashState createState() => _SplashState();
+  SplashState createState() => SplashState();
 }
 
-class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -45,6 +45,8 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
         //
         // }
         // userRefreshToken = authResponse.body;
+
+        logaction("User authenticated.");
         Navigator.of(context).pushReplacementNamed('/$userCurrentPage');
         return;
       }

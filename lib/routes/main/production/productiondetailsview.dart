@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class ProductionDetails extends StatefulWidget {
   const ProductionDetails({Key? key}) : super(key: key);
@@ -12,6 +10,6 @@ class ProductionDetails extends StatefulWidget {
 class _ProductionDetailsState extends State<ProductionDetails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }
