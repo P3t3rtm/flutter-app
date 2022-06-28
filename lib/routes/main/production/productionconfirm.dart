@@ -17,7 +17,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
   @override
   void initState() {
     super.initState();
-    userCurrentPage = 'Production Confirm';
+    userData.currentPage = 'Production Confirm';
   }
 
   @override
@@ -37,7 +37,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
             color: themeColor,
           ),
           onPressed: () {
-            userCurrentPage = 'Production Add';
+            userData.currentPage = 'Production Add';
             Navigator.of(context).pop();
           },
         ),
@@ -57,7 +57,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
                     padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
                   ),
                   onPressed: () {
-                    userCurrentPage = 'Production Add';
+                    userData.currentPage = 'Production Add';
                     Navigator.of(context).pop();
                   },
                   child: const Text('REJECT'),
@@ -109,7 +109,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
                       Navigator.pushReplacementNamed(context, '/Production');
                     }
                   },
-                  child: const Text('VERIFY'),
+                  child: const Text('CONFIRM'),
                 ),
               ],
             );
@@ -158,7 +158,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
       return await http
           .post(
             Uri.parse('${apiUrl}production/addproduction?logID=$logID'),
-            headers: {"api": xapikey, "jwt": userJwtToken},
+            headers: {"api": xapikey, "jwt": userData.jwtToken},
             //the body will be a json array of productID and quantity
             body: json.encode(data),
           )

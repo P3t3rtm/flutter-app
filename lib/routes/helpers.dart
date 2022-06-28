@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import http
 import 'package:http/http.dart' as http;
 
 //helper functions and variables to be used in the app
@@ -18,7 +17,6 @@ import 'package:http/http.dart' as http;
 // 		}
 // 	]
 // }
-var data = {};
 
 double buttonFontSize = 16.0;
 double buttonHeight = 40.0;
@@ -27,12 +25,6 @@ double cursorHeight = 23.0;
 
 Color themeColor = const Color.fromARGB(255, 57, 173, 53);
 
-String userFirstName = '';
-String userLastName = '';
-String userEmail = '';
-String userJwtToken = '';
-String userRefreshToken = '';
-String userCurrentPage = '';
 int productionCurrentLot = 0;
 
 //todo make new keys and hide from github
@@ -83,27 +75,72 @@ appTheme() {
   );
 }
 
-Future<http.Response> logaction(logAction) async {
+Future<http.Response> httpfetchusers() async {
   try {
     return await http.get(
-      Uri.parse('${apiUrl}data/addlog?logAction=$logAction'),
-      headers: {"api": xapikey, "jwt": userJwtToken},
+      Uri.parse('${apiUrl}data/fetchusers'),
+      headers: {"api": xapikey, "jwt": userData.jwtToken},
     ).timeout(const Duration(seconds: 5));
   } catch (e) {
     return http.Response('', 500);
   }
 }
 
-//used in productionview and productiondetailsview
+Future<http.Response> logaction(logAction) async {
+  try {
+    return await http.get(
+      Uri.parse('${apiUrl}data/addlog?logAction=$logAction'),
+      headers: {"api": xapikey, "jwt": userData.jwtToken},
+    ).timeout(const Duration(seconds: 5));
+  } catch (e) {
+    return http.Response('', 500);
+  }
+}
+
+//used in productionview and productiondetailsview ===========================================================================================
+
+var data = {}; //productinadd list of products to be added to the production
 var lotMap = {};
+var userMap = {};
+var quantityMap = {};
+CurrentUser userData = CurrentUser(
+//  String firstName,
+//   String lastName,
+//   int id,
+//   int colorID,
+//   String email,
+//   String jwtToken,
+//   String refreshToken,
+//   String currentPage,
+//   bool isAdmin,
+//   bool accessProduction,
+//   bool accessInventory,
+//   bool accessInvoicing,
+//   bool accessAccounting,
+  '',
+  '',
+  0,
+  0,
+  '',
+  '',
+  0,
+  '',
+  false,
+  false,
+  false,
+  false,
+  false,
+);
+
 List<Production> productions = [];
 List<Product> products = [];
+List<User> users = [];
 
 Future<http.Response> fetchproduction() async {
   try {
     return await http.get(
       Uri.parse('${apiUrl}production/fetchproduction'),
-      headers: {"api": xapikey, "jwt": userJwtToken},
+      headers: {"api": xapikey, "jwt": userData.jwtToken},
     ).timeout(const Duration(seconds: 5));
   } catch (e) {
     return http.Response('', 500);
@@ -114,7 +151,7 @@ Future<http.Response> fetchproducts() async {
   try {
     return await http.get(
       Uri.parse('${apiUrl}production/fetchproducts'),
-      headers: {"api": xapikey, "jwt": userJwtToken},
+      headers: {"api": xapikey, "jwt": userData.jwtToken},
     ).timeout(const Duration(seconds: 5));
   } catch (e) {
     return http.Response('', 500);
@@ -148,9 +185,10 @@ class Production {
   final int userID;
   final int timestamp;
   final bool isConfirmed;
+  final int confirmTime;
 
   Production(this.lotNumber, this.quantity, this.productID, this.userID,
-      this.timestamp, this.id, this.isConfirmed);
+      this.timestamp, this.id, this.isConfirmed, this.confirmTime);
 
   Production.fromJson(Map<String, dynamic> json)
       : lotNumber = json['lotNumber'],
@@ -159,5 +197,73 @@ class Production {
         productID = json['productID'],
         userID = json['userID'],
         timestamp = json['createdAt'],
-        isConfirmed = json['isConfirmed'];
+        isConfirmed = json['isConfirmed'],
+        confirmTime = json['updatedAt'];
+}
+
+class User {
+  String firstName;
+  String lastName;
+  int id;
+  int colorID;
+
+  User(
+    this.firstName,
+    this.lastName,
+    this.id,
+    this.colorID,
+  );
+
+  User.fromJson(Map<String, dynamic> json)
+      : firstName = json['firstName'],
+        lastName = json['lastName'],
+        id = json['id'],
+        colorID = json['colorID'];
+}
+
+class CurrentUser {
+  int id;
+  String firstName;
+  String lastName;
+  String email;
+  int colorID;
+  int refreshToken;
+  String jwtToken;
+  String currentPage;
+  bool isAdmin;
+  bool accessProduction;
+  bool accessInventory;
+  bool accessInvoicing;
+  bool accessAccounting;
+
+  CurrentUser(
+    this.firstName,
+    this.lastName,
+    this.id,
+    this.colorID,
+    this.email,
+    this.jwtToken,
+    this.refreshToken,
+    this.currentPage,
+    this.isAdmin,
+    this.accessProduction,
+    this.accessInventory,
+    this.accessInvoicing,
+    this.accessAccounting,
+  );
+
+  CurrentUser.fromJson(Map<String, dynamic> json)
+      : firstName = json['firstName'],
+        lastName = json['lastName'],
+        id = json['id'],
+        colorID = json['colorID'],
+        email = json['email'],
+        jwtToken = json['jwtToken'],
+        refreshToken = json['refreshToken'],
+        currentPage = json['currentPage'],
+        isAdmin = json['isAdmin'],
+        accessProduction = json['accessProduction'],
+        accessInventory = json['accessInventory'],
+        accessInvoicing = json['accessInvoicing'],
+        accessAccounting = json['accessAccounting'];
 }

@@ -22,7 +22,7 @@ class _ProductionAddState extends State<ProductionAdd> {
   @override
   void initState() {
     super.initState();
-    userCurrentPage = 'Production Add';
+    userData.currentPage = 'Production Add';
     GroupProducts();
   }
 
@@ -66,7 +66,7 @@ class _ProductionAddState extends State<ProductionAdd> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           //if not usercurrentpage is productionadd return
-          if (userCurrentPage != 'Production Add') return;
+          if (userData.currentPage != 'Production Add') return;
 
           //check if at least one textfield is NOT empty
           bool isEmpty = true;
@@ -133,7 +133,7 @@ class _ProductionAddState extends State<ProductionAdd> {
             color: themeColor,
           ),
           onPressed: () {
-            userCurrentPage = 'Production';
+            userData.currentPage = 'Production';
             Navigator.pop(context);
           },
         ),

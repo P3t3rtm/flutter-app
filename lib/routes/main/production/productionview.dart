@@ -1,10 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:makemyown/routes/helpers.dart';
 import '../sidemenu/drawerleftpage.dart';
-import 'package:http/http.dart' as http;
 
 class ProductionView extends StatefulWidget {
   const ProductionView({Key? key}) : super(key: key);
@@ -13,19 +11,13 @@ class ProductionView extends StatefulWidget {
 }
 
 class _ProductionViewState extends State<ProductionView> {
-  var userMap = {};
-
-  var quantityMap = {};
-
-  List<User> users = [];
-
   //late Timer timer;
   int counter = 0;
   int lastping = 0;
 
   @override
   void initState() {
-    userCurrentPage = 'Production';
+    userData.currentPage = 'Production';
     super.initState();
     //timer = Timer.periodic(Duration(seconds: 10), (Timer t) {});
     fetchdata();
@@ -34,12 +26,19 @@ class _ProductionViewState extends State<ProductionView> {
   @override
   void dispose() {
     //timer.cancel();
+    lotMap.clear();
+    userMap.clear();
+    quantityMap.clear();
+    users.clear();
+    products.clear();
+    productions.clear();
+
     super.dispose();
   }
 
   void fetchdata() async {
     final fetchProductionResponse = await fetchproduction();
-    final fetchUserResponse = await fetchusers();
+    final fetchUserResponse = await httpfetchusers();
     final fetchProductsResponse = await fetchproducts();
     if (fetchProductionResponse.statusCode != 200 ||
         fetchUserResponse.statusCode != 200 ||
@@ -142,7 +141,7 @@ class _ProductionViewState extends State<ProductionView> {
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text(
-                    userCurrentPage,
+                    userData.currentPage,
                     style: const TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -209,7 +208,8 @@ class _ProductionViewState extends State<ProductionView> {
                                   width: queryData.size.width * 0.5 - 15,
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(
-                                    'Quantity: ${quantityMap.values.elementAt(index)}',
+                                    //'Lot #${lotMap.keys.elementAt(index)} Qty: ${quantityMap.values.elementAt(index)}',
+                                    'Qty: ${quantityMap.values.elementAt(index)}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
@@ -253,30 +253,4 @@ class _ProductionViewState extends State<ProductionView> {
       ),
     );
   }
-
-  Future<http.Response> fetchusers() async {
-    try {
-      return await http.get(
-        Uri.parse('${apiUrl}data/fetchusers'),
-        headers: {"api": xapikey, "jwt": userJwtToken},
-      ).timeout(const Duration(seconds: 5));
-    } catch (e) {
-      return http.Response('', 500);
-    }
-  }
-}
-
-class User {
-  final String firstName;
-  final String lastName;
-  final int id;
-  final int colorID;
-
-  User(this.firstName, this.lastName, this.id, this.colorID);
-
-  User.fromJson(Map<String, dynamic> json)
-      : firstName = json['firstName'],
-        lastName = json['lastName'],
-        id = json['id'],
-        colorID = json['colorID'];
 }

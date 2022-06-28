@@ -41,6 +41,7 @@ dependencies:
   mask_text_input_formatter: ^2.3.0
   email_validator: ^2.0.1
   scrollable_list_tabview: ^0.2.0-nullsafety
+  local_auth: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -232,8 +232,8 @@ class SignInFormState extends State<SignInForm>
       SharedPreferences prefs = await SharedPreferences.getInstance();
       //address found; change to main page
       if (signinResponse.statusCode == 200) {
-        userJwtToken = jsonDecode(signinResponse.body)['jwtToken'];
-        await prefs.setString('jwt', userJwtToken);
+        userData.jwtToken = jsonDecode(signinResponse.body)['jwtToken'];
+        await prefs.setString('jwt', userData.jwtToken);
         Navigator.pushReplacementNamed(context, '/');
       } else if (signinResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(

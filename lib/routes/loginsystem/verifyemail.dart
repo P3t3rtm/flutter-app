@@ -163,8 +163,8 @@ class VerifyEmailPageState extends State<VerifyEmailPage>
 
       if (verifyResponse.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        userJwtToken = jsonDecode(verifyResponse.body)['jwtToken'];
-        await prefs.setString('jwt', userJwtToken);
+        userData.jwtToken = jsonDecode(verifyResponse.body)['jwtToken'];
+        await prefs.setString('jwt', userData.jwtToken);
         Navigator.pushReplacementNamed(context, '/');
       } else if (verifyResponse.statusCode == 401) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

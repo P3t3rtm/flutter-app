@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../helpers.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:local_auth/local_auth.dart';
 
 //todo add biometric unlock after 1 hour of inactivity
 
@@ -34,10 +36,10 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
 
     //await prefs.setString('jwt', ''); //todo remove this line after testing
 
-    userJwtToken = (prefs.getString('jwt') ?? "");
-    userCurrentPage = (prefs.getString('page') ??
-        "Production"); //todo implement the rest of this
-    if (userJwtToken != "") {
+    userData.jwtToken = (prefs.getString('jwt') ?? "");
+    userData.currentPage = (prefs.getString('page') ??
+        "Welcome"); //todo implement the rest of this, pref.setstring everytime user changes a MAIN SIDEBAR PAGE
+    if (userData.jwtToken != "") {
       final authResponse = await auth();
       if (authResponse.statusCode == 200) {
         // todo maybe implement refresh tokens?
@@ -46,8 +48,25 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
         // }
         // userRefreshToken = authResponse.body;
 
+        //map userData with data from authResponse json object
+        userData.id = json.decode(authResponse.body)['id'];
+        userData.firstName = json.decode(authResponse.body)['firstName'];
+        userData.lastName = json.decode(authResponse.body)['lastName'];
+        userData.email = json.decode(authResponse.body)['email'];
+        userData.colorID = json.decode(authResponse.body)['colorID'];
+        userData.refreshToken = json.decode(authResponse.body)['refreshToken'];
+        userData.isAdmin = json.decode(authResponse.body)['isAdmin'];
+        userData.accessProduction =
+            json.decode(authResponse.body)['accessProduction'];
+        userData.accessInventory =
+            json.decode(authResponse.body)['accessInventory'];
+        userData.accessInvoicing =
+            json.decode(authResponse.body)['accessInvoicing'];
+        userData.accessAccounting =
+            json.decode(authResponse.body)['accessAccounting'];
+
         logaction("User authenticated.");
-        Navigator.of(context).pushReplacementNamed('/$userCurrentPage');
+        Navigator.of(context).pushReplacementNamed('/${userData.currentPage}');
         return;
       }
     }
@@ -57,11 +76,46 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   @override
   void afterFirstLayout(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 2)); //todo remove fake delay
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    checkFirstSeen();
+
+    final LocalAuthentication auth = LocalAuthentication();
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    if (canAuthenticateWithBiometrics) {
+      final List<BiometricType> availableBiometrics =
+          await auth.getAvailableBiometrics();
+      if (availableBiometrics.isNotEmpty) {
+        try {
+          final bool didAuthenticate = await auth.authenticate(
+              localizedReason: 'Please authenticate to continue.',
+              options: const AuthenticationOptions(biometricOnly: true));
+
+          if (didAuthenticate) {
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ]);
+            checkFirstSeen();
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('You must authenticate to continue.'),
+              duration: Duration(seconds: 2),
+            ));
+            Navigator.of(context).pushReplacementNamed('/');
+          }
+        } on PlatformException catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Platform Exception: $e'),
+            duration: const Duration(seconds: 2),
+          ));
+          Navigator.of(context).pushReplacementNamed('/');
+        }
+      } else {
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
+        checkFirstSeen();
+      }
+    }
   }
 
 //this is the loading screen graphics
@@ -83,8 +137,9 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
               SizedBox(
                 width: 0.15 * queryData.size.width,
                 height: 0.15 * queryData.size.width,
-                child: const CircularProgressIndicator(
-                  backgroundColor: Colors.red,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.orangeAccent,
+                  color: themeColor,
                 ),
               ),
               const SizedBox(height: 20),
@@ -100,7 +155,7 @@ class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     try {
       return await http.get(
         Uri.parse('${apiUrl}user/auth'),
-        headers: {"api": xapikey, "jwt": userJwtToken},
+        headers: {"api": xapikey, "jwt": userData.jwtToken},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       return http.Response('', 500);

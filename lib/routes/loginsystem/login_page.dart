@@ -4,14 +4,14 @@ import '../helpers.dart';
 import 'form_signin.dart';
 import 'form_signup.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State<LoginPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(

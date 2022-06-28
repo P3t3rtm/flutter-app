@@ -52,188 +52,202 @@ class _LeftDrawerState extends State<LeftDrawer> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  SizedBox(
-                    height: 55,
-                    child: TextButton(
-                      onPressed: () async {
-                        //Navigator.pushReplacementNamed(context, '/auth');
-                      },
-                      child: Row(
-                        children: const [
-                          SizedBox(width: 15),
-                          Icon(
-                            Icons.factory_rounded,
-                            color: Colors.orangeAccent,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Production',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
+                  userData.accessProduction
+                      ? const Divider(
+                          height: 0,
+                          color: Colors.black12,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        )
+                      : const SizedBox(),
+                  userData.accessProduction
+                      ? SizedBox(
+                          height: 55,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/Production');
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(width: 15),
+                                Icon(
+                                  Icons.factory_rounded,
+                                  color: Colors.orangeAccent,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Production',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  SizedBox(
-                    height: 55,
-                    child: TextButton(
-                      onPressed: () async {
-                        //Navigator.pushNamed(context, '/auth');
-                      },
-                      child: Row(
-                        children: const [
-                          SizedBox(width: 15),
-                          Icon(
-                            Icons.inventory_rounded,
-                            color: Colors.orangeAccent,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Inventory',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
+                        )
+                      : const SizedBox(),
+                  userData.accessInventory
+                      ? const Divider(
+                          height: 0,
+                          color: Colors.black12,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        )
+                      : const SizedBox(),
+                  userData.accessInventory
+                      ? SizedBox(
+                          height: 55,
+                          child: TextButton(
+                            onPressed: () async {
+                              //Navigator.pushNamed(context, '/auth');
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(width: 15),
+                                Icon(
+                                  Icons.inventory_rounded,
+                                  color: Colors.orangeAccent,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Inventory',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  SizedBox(
-                    height: 55,
-                    child: TextButton(
-                      onPressed: () async {
-                        //Navigator.pushNamed(context, '/auth');
-                      },
-                      child: Row(
-                        children: const [
-                          SizedBox(width: 15),
-                          Icon(
-                            Icons.note_rounded,
-                            color: Colors.orangeAccent,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Invoicing',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
+                        )
+                      : const SizedBox(),
+                  userData.accessInvoicing
+                      ? const Divider(
+                          height: 0,
+                          color: Colors.black12,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        )
+                      : const SizedBox(),
+                  userData.accessInvoicing
+                      ? SizedBox(
+                          height: 55,
+                          child: TextButton(
+                            onPressed: () async {
+                              //Navigator.pushNamed(context, '/auth');
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(width: 15),
+                                Icon(
+                                  Icons.note_rounded,
+                                  color: Colors.orangeAccent,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Invoicing',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  SizedBox(
-                    height: 55,
-                    child: TextButton(
-                      onPressed: () async {
-                        //Navigator.pushNamed(context, '/auth');
-                      },
-                      child: Row(
-                        children: const [
-                          SizedBox(width: 15),
-                          Icon(
-                            Icons.bar_chart_outlined,
-                            color: Colors.orangeAccent,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Accounting',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
+                        )
+                      : const SizedBox(),
+                  userData.accessAccounting
+                      ? const Divider(
+                          height: 0,
+                          color: Colors.black12,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        )
+                      : const SizedBox(),
+                  userData.accessAccounting
+                      ? SizedBox(
+                          height: 55,
+                          child: TextButton(
+                            onPressed: () async {
+                              //Navigator.pushNamed(context, '/auth');
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(width: 15),
+                                Icon(
+                                  Icons.bar_chart_outlined,
+                                  color: Colors.orangeAccent,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Accounting',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
-                  SizedBox(
-                    height: 55,
-                    child: TextButton(
-                      onPressed: () async {
-                        //Navigator.pushNamed(context, '/auth');
-                      },
-                      child: Row(
-                        children: const [
-                          SizedBox(width: 15),
-                          Icon(
-                            Icons.help_outline_rounded,
-                            color: Colors.orangeAccent,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Logs',
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20),
-                              ),
+                        )
+                      : const SizedBox(),
+                  userData.isAdmin
+                      ? const Divider(
+                          height: 0,
+                          color: Colors.black12,
+                          thickness: 1,
+                          indent: 15,
+                          endIndent: 15,
+                        )
+                      : const SizedBox(),
+                  userData.isAdmin
+                      ? SizedBox(
+                          height: 55,
+                          child: TextButton(
+                            onPressed: () async {
+                              //Navigator.pushNamed(context, '/auth');
+                            },
+                            child: Row(
+                              children: const [
+                                SizedBox(width: 15),
+                                Icon(
+                                  Icons.help_outline_rounded,
+                                  color: Colors.orangeAccent,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10.0),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Logs',
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black12,
-                    thickness: 1,
-                    indent: 15,
-                    endIndent: 15,
-                  ),
+                        )
+                      : const SizedBox(),
                 ],
               ),
             ),
@@ -253,7 +267,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
                           onPressed: () async {
                             SharedPreferences prefs =
                                 await SharedPreferences.getInstance();
-                            userJwtToken = '';
+                            userData.jwtToken = '';
                             await prefs.setString('jwt', '');
                             Navigator.pushReplacementNamed(context, '/login');
                           },

@@ -4,6 +4,7 @@ import 'routes/loginsystem/auth_splash.dart';
 import 'package:flutter/material.dart';
 import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
+import 'routes/main/mainpage/welcome.dart';
 import 'routes/main/production/productionadd.dart';
 import 'routes/main/production/productionconfirm.dart';
 import 'routes/main/production/productiondetailsview.dart';
@@ -27,7 +28,9 @@ void main() {
       routes: {
         '/': (context) => const Splash(),
 
-        '/login': (context) => const AuthPage(),
+        '/login': (context) => const LoginPage(),
+
+        '/Welcome': (context) => const WelcomePage(),
 
         '/Production': (context) => const ProductionView(),
         '/Production Add': (context) => const ProductionAdd(),
@@ -46,20 +49,3 @@ void main() {
     ),
   );
 }
-
-//#region =========================DELIVERY PAGE================================
-//#endregion
-//#region =========================PICKUP PAGE==================================
-//#endregion
-//#region =========================OFFERS PAGE==================================
-//#endregion
-//#region =========================SEARCH PAGE==================================
-//#endregion
-//#region =========================ORDERS PAGE==================================
-//#endregion
-//#region =========================PAYMENT PAGE=================================
-//#endregion
-//#region =========================SETTINGS PAGE================================
-//todo: profile / payment methods / addresses / contact support (get help) / become a partner restaurant / now hiring / frequently asked questions ()/ legal / logout /
-
-//#endregion
