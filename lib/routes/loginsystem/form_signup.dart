@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -324,7 +326,7 @@ class SignUpFormState extends State<SignUpForm>
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFFeb1700),
+                    primary: themeColor,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(500)),

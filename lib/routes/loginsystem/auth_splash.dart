@@ -35,7 +35,8 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
     //await prefs.setString('jwt', ''); //todo remove this line after testing
 
     userJwtToken = (prefs.getString('jwt') ?? "");
-    userCurrentPage = (prefs.getString('page') ?? "Production");
+    userCurrentPage = (prefs.getString('page') ??
+        "Production"); //todo implement the rest of this
     if (userJwtToken != "") {
       final authResponse = await auth();
       if (authResponse.statusCode == 200) {
@@ -96,8 +97,8 @@ class _SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   Future<http.Response> auth() async {
     try {
       return await http.get(
-        Uri.parse('${apiUrl}user/auth?jwtToken=$userJwtToken'),
-        headers: {"api": xapikey, "jwt": ""},
+        Uri.parse('${apiUrl}user/auth'),
+        headers: {"api": xapikey, "jwt": userJwtToken},
       ).timeout(const Duration(seconds: 5));
     } catch (e) {
       return http.Response('', 500);

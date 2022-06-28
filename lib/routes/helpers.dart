@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//import http
+import 'package:http/http.dart' as http;
 
 //helper functions and variables to be used in the app
+
+//data has a structure of
+// {
+// 	"values": [
+// 		{
+// 			"productID": 1,
+// 			"quantity": 15
+// 		},
+// 		{
+// 			"productID": 2,
+// 			"quantity": 15575
+// 		}
+// 	]
+// }
+var data = {};
 
 double buttonFontSize = 16.0;
 double buttonHeight = 40.0;
@@ -9,13 +26,6 @@ double formHeight = 65.0;
 double cursorHeight = 23.0;
 
 Color themeColor = Color.fromARGB(255, 57, 173, 53);
-
-bool mainCartHasItems = true;
-bool mainIsUSD = false;
-
-bool mainPageRestaurant = true;
-bool mainPageSearch = false;
-bool mainPageOrders = false;
 
 String userFirstName = '';
 String userLastName = '';
@@ -70,4 +80,15 @@ appTheme() {
     systemNavigationBarColor: Colors.white,
     systemNavigationBarIconBrightness: Brightness.dark,
   );
+}
+
+Future<http.Response> logaction(logAction) async {
+  try {
+    return await http.get(
+      Uri.parse('${apiUrl}data/addlog?logAction=$logAction'),
+      headers: {"api": xapikey, "jwt": userJwtToken},
+    ).timeout(const Duration(seconds: 5));
+  } catch (e) {
+    return http.Response('', 500);
+  }
 }

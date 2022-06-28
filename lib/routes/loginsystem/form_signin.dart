@@ -203,7 +203,7 @@ class SignInFormState extends State<SignInForm>
                 padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: const Color(0xFFeb1700),
+                    primary: themeColor,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(500)),

@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:makemyown/routes/helpers.dart';
 import '../sidemenu/drawerleftpage.dart';
+import 'package:http/http.dart' as http;
 
 class ProductionView extends StatefulWidget {
   const ProductionView({Key? key}) : super(key: key);
@@ -13,19 +13,70 @@ class ProductionView extends StatefulWidget {
 }
 
 class _ProductionViewState extends State<ProductionView> {
-  late Timer timer;
+  var userMap = {};
+  var lotMap = {};
+  var quantityMap = {};
+  List<Production> productions = [];
+  List<User> users = [];
+
+  //late Timer timer;
   int counter = 0;
+  int lastping = 0;
 
   @override
   void initState() {
+    userCurrentPage = 'Production';
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 2), (Timer t) => print('timer'));
+    //timer = Timer.periodic(Duration(seconds: 10), (Timer t) {});
+    fetchdata();
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    //timer.cancel();
     super.dispose();
+  }
+
+  void fetchdata() async {
+    final fetchProductionResponse = await fetchproduction();
+    final fetchUserResponse = await fetchusers();
+    if (fetchProductionResponse.statusCode != 200 ||
+        fetchUserResponse.statusCode != 200) return;
+    productions = (json.decode(fetchProductionResponse.body) as List)
+        .map((data) => Production.fromJson(data))
+        .toList();
+    users = (json.decode(fetchUserResponse.body) as List)
+        .map((data) => User.fromJson(data))
+        .toList();
+
+    //group users by id
+
+    for (var user in users) {
+      userMap[user.id] = [user];
+    }
+
+    //group productions by lotNumber using lotMap
+    for (var production in productions) {
+      if (lotMap[production.lotNumber] == null) {
+        lotMap[production.lotNumber] = [production];
+      } else {
+        lotMap[production.lotNumber].add(production);
+      }
+      //sum up production quantities using lotNumber
+      if (quantityMap[production.lotNumber] == null) {
+        quantityMap[production.lotNumber] = production.quantity;
+      } else {
+        quantityMap[production.lotNumber] += production.quantity;
+      }
+    }
+    print(lotMap);
+    // print(quantityMap);
+    // print(userMap);
+    print(lotMap.length);
+    //print the first entry of lotMap
+    print(lotMap.values.first);
+
+    setState(() {});
   }
 
   @override
@@ -42,33 +93,34 @@ class _ProductionViewState extends State<ProductionView> {
             onPressed: () {
               Navigator.of(context).pushNamed('/Production Add');
             },
+            backgroundColor: themeColor,
             child: const Icon(
               Icons.add,
               size: 35,
             ),
-            backgroundColor: themeColor,
           ),
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(0.0),
-                    child: Container(
-                      color: Colors.green,
-                      height: 15.0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            '(OK: 5281 ms)',
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    )),
+                forceElevated: true,
+                // bottom: PreferredSize(
+                //     preferredSize: const Size.fromHeight(0.0),
+                //     child: Container(
+                //       color: Colors.green,
+                //       height: 15.0,
+                //       child: Row(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: <Widget>[
+                //           Text(
+                //             '(OK: 281 ms)',
+                //             style: TextStyle(
+                //                 fontSize: 10,
+                //                 fontWeight: FontWeight.bold,
+                //                 color: Colors.white),
+                //           ),
+                //         ],
+                //       ),
+                //     )),
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
                 pinned: false,
@@ -102,12 +154,14 @@ class _ProductionViewState extends State<ProductionView> {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
+                  //childCount should be size of lotMap
+                  childCount: lotMap.length,
                   (BuildContext context, int index) {
                     //make the following container a tapable card
                     return GestureDetector(
                       onTap: () {
                         //Navigator.pushNamed(context, '/productiondetailsview');
-                        print('pressed $index');
+                        print(productions[index].isConfirmed);
                       },
                       child: Container(
                         clipBehavior: Clip.hardEdge,
@@ -137,11 +191,18 @@ class _ProductionViewState extends State<ProductionView> {
                             //warning icon
                             Container(
                               margin: const EdgeInsets.only(left: 50),
-                              child: const Icon(
-                                Icons.watch_later_outlined,
-                                color: Colors.orangeAccent,
-                                size: 30,
-                              ),
+                              child:
+                                  lotMap.values.elementAt(index)[0].isConfirmed
+                                      ? Icon(
+                                          Icons.check_circle_outline_rounded,
+                                          color: themeColor,
+                                          size: 30,
+                                        )
+                                      : const Icon(
+                                          Icons.watch_later_outlined,
+                                          color: Colors.orangeAccent,
+                                          size: 30,
+                                        ),
                             ),
                             Column(
                               children: [
@@ -150,8 +211,8 @@ class _ProductionViewState extends State<ProductionView> {
                                   width: queryData.size.width * 0.5 - 15,
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(
-                                    'Quantity: $index',
-                                    style: TextStyle(
+                                    'Quantity: ${quantityMap.values.elementAt(index)}',
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
                                   ),
@@ -161,7 +222,17 @@ class _ProductionViewState extends State<ProductionView> {
                                   width: queryData.size.width * 0.5 - 15,
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(
-                                    'Peter Tan',
+                                    //first and last name of user
+                                    userMap[lotMap.values
+                                                .elementAt(index)[0]
+                                                .userID][0]
+                                            .firstName +
+                                        ' ' +
+                                        userMap[lotMap.values
+                                                .elementAt(index)[0]
+                                                .userID][0]
+                                            .lastName,
+
                                     style: const TextStyle(
                                       overflow: TextOverflow.ellipsis,
                                       color: Colors.black54,
@@ -176,7 +247,6 @@ class _ProductionViewState extends State<ProductionView> {
                       ),
                     );
                   },
-                  childCount: 50,
                 ),
               ),
             ],
@@ -185,4 +255,63 @@ class _ProductionViewState extends State<ProductionView> {
       ),
     );
   }
+
+  Future<http.Response> fetchproduction() async {
+    try {
+      return await http.get(
+        Uri.parse('${apiUrl}production/fetchproduction'),
+        headers: {"api": xapikey, "jwt": userJwtToken},
+      ).timeout(const Duration(seconds: 5));
+    } catch (e) {
+      return http.Response('', 500);
+    }
+  }
+
+  Future<http.Response> fetchusers() async {
+    try {
+      return await http.get(
+        Uri.parse('${apiUrl}data/fetchusers'),
+        headers: {"api": xapikey, "jwt": userJwtToken},
+      ).timeout(const Duration(seconds: 5));
+    } catch (e) {
+      return http.Response('', 500);
+    }
+  }
+}
+
+class User {
+  final String firstName;
+  final String lastName;
+  final int id;
+  final int colorID;
+
+  User(this.firstName, this.lastName, this.id, this.colorID);
+
+  User.fromJson(Map<String, dynamic> json)
+      : firstName = json['firstName'],
+        lastName = json['lastName'],
+        id = json['id'],
+        colorID = json['colorID'];
+}
+
+class Production {
+  final int id;
+  final int lotNumber;
+  final int quantity;
+  final int productID;
+  final int userID;
+  final int timestamp;
+  final bool isConfirmed;
+
+  Production(this.lotNumber, this.quantity, this.productID, this.userID,
+      this.timestamp, this.id, this.isConfirmed);
+
+  Production.fromJson(Map<String, dynamic> json)
+      : lotNumber = json['lotNumber'],
+        quantity = json['quantity'],
+        id = json['id'],
+        productID = json['productID'],
+        userID = json['userID'],
+        timestamp = json['createdAt'],
+        isConfirmed = json['isConfirmed'];
 }
