@@ -363,8 +363,8 @@ class SignUpFormState extends State<SignUpForm>
     attemptedSubmit = true;
     if (_formKey.currentState!.validate()) {
       final signupResponse = await signup(
-          controllerFirstname.text,
-          controllerLastname.text,
+          controllerFirstname.text.trim(),
+          controllerLastname.text.trim(),
           controllerPassword.text,
           controllerEmail.text,
           controllerPhone.text.replaceAll('-', ''));

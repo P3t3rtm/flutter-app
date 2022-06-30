@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +19,12 @@ class _ProductionViewState extends State<ProductionView> {
 
   @override
   void initState() {
+    productionMap = {};
+
+    lotMap = [];
+    userMap = [];
+    productMap = [];
+
     userData.currentPage = 'Production';
     super.initState();
     //timer = Timer.periodic(Duration(seconds: 10), (Timer t) {});
@@ -26,52 +34,65 @@ class _ProductionViewState extends State<ProductionView> {
   @override
   void dispose() {
     //timer.cancel();
-    lotMap.clear();
-    userMap.clear();
-    quantityMap.clear();
-    users.clear();
-    products.clear();
-    productions.clear();
 
     super.dispose();
   }
 
   void fetchdata() async {
-    final fetchProductionResponse = await fetchproduction();
+    final fetchLotResponse = await fetchlots();
+    if (fetchLotResponse.statusCode != 200) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Failure to fetch lots.'),
+        duration: Duration(seconds: 2),
+      ));
+      return;
+    }
+    //populate lotMap with lots from fetchLotResponse
+    lotMap = json.decode(fetchLotResponse.body);
+
+    //foreach lot in lotMap, fetch its productions
+    for (var lot in lotMap) {
+      final fetchProductionResponse = await fetchproduction(lot['id']);
+      if (fetchProductionResponse.statusCode != 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Failure to fetch production.'),
+          duration: Duration(seconds: 2),
+        ));
+        return;
+      }
+      productionMap[lot['id']] = json.decode(fetchProductionResponse.body);
+    }
+    //sum up production quantities using lotNumber
+    for (var lot in lotMap) {
+      num sum = 0;
+      for (var production in productionMap[lot['id']]) {
+        sum += production['quantity'];
+      }
+      lot['quantity'] = sum;
+    }
+
     final fetchUserResponse = await httpfetchusers();
-    final fetchProductsResponse = await fetchproducts();
-    if (fetchProductionResponse.statusCode != 200 ||
-        fetchUserResponse.statusCode != 200 ||
-        fetchProductsResponse.statusCode != 200) return;
-    productions = (json.decode(fetchProductionResponse.body) as List)
-        .map((data) => Production.fromJson(data))
-        .toList();
-    users = (json.decode(fetchUserResponse.body) as List)
-        .map((data) => User.fromJson(data))
-        .toList();
-    products = (json.decode(fetchProductsResponse.body) as List)
-        .map((data) => Product.fromJson(data))
-        .toList();
-    //group users by id
-
-    for (var user in users) {
-      userMap[user.id] = [user];
+    if (fetchUserResponse.statusCode != 200) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Failure to fetch users.'),
+        duration: Duration(seconds: 2),
+      ));
+      return;
     }
+    //populate userMap with users from fetchUserResponse
+    userMap = json.decode(fetchUserResponse.body);
 
-    //group productions by lotNumber using lotMap
-    for (var production in productions) {
-      if (lotMap[production.lotNumber] == null) {
-        lotMap[production.lotNumber] = [production];
-      } else {
-        lotMap[production.lotNumber].add(production);
-      }
-      //sum up production quantities using lotNumber
-      if (quantityMap[production.lotNumber] == null) {
-        quantityMap[production.lotNumber] = production.quantity;
-      } else {
-        quantityMap[production.lotNumber] += production.quantity;
-      }
+    //fetch products
+    final fetchProductResponse = await fetchproducts();
+    if (fetchProductResponse.statusCode != 200) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Failure to fetch products.'),
+        duration: Duration(seconds: 2),
+      ));
+      return;
     }
+    //populate products from fetchProductResponse
+    productMap = json.decode(fetchProductResponse.body);
 
     setState(() {});
   }
@@ -157,7 +178,11 @@ class _ProductionViewState extends State<ProductionView> {
                     //make the following container a tapable card
                     return GestureDetector(
                       onTap: () {
-                        productionCurrentLot = lotMap.keys.elementAt(index);
+                        userData.currentLot = lotMap[index]['id'];
+                        for (var product
+                            in productionMap[userData.currentLot]) {
+                          product['isChecked'] = false;
+                        }
                         Navigator.pushNamed(context, '/Production Details');
                       },
                       child: Container(
@@ -188,16 +213,21 @@ class _ProductionViewState extends State<ProductionView> {
                             //warning icon
                             Container(
                               margin: const EdgeInsets.only(left: 50),
-                              child:
-                                  lotMap.values.elementAt(index)[0].isConfirmed
-                                      ? Icon(
-                                          Icons.check_circle_outline_rounded,
-                                          color: themeColor,
+                              child: lotMap[index]['isConfirmed'] == 1
+                                  ? Icon(
+                                      Icons.check_circle_outline_rounded,
+                                      color: themeColor,
+                                      size: 30,
+                                    )
+                                  : lotMap[index]['isConfirmed'] == 0
+                                      ? const Icon(
+                                          Icons.watch_later_outlined,
+                                          color: Colors.orangeAccent,
                                           size: 30,
                                         )
                                       : const Icon(
-                                          Icons.watch_later_outlined,
-                                          color: Colors.orangeAccent,
+                                          Icons.remove_circle_outline_rounded,
+                                          color: Colors.redAccent,
                                           size: 30,
                                         ),
                             ),
@@ -209,7 +239,7 @@ class _ProductionViewState extends State<ProductionView> {
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(
                                     //'Lot #${lotMap.keys.elementAt(index)} Qty: ${quantityMap.values.elementAt(index)}',
-                                    'Qty: ${quantityMap.values.elementAt(index)}',
+                                    'Qty: ${lotMap[index]['quantity']}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15),
@@ -220,16 +250,8 @@ class _ProductionViewState extends State<ProductionView> {
                                   width: queryData.size.width * 0.5 - 15,
                                   padding: const EdgeInsets.only(left: 15),
                                   child: Text(
-                                    //first and last name of user
-                                    userMap[lotMap.values
-                                                .elementAt(index)[0]
-                                                .userID][0]
-                                            .firstName +
-                                        ' ' +
-                                        userMap[lotMap.values
-                                                .elementAt(index)[0]
-                                                .userID][0]
-                                            .lastName,
+                                    //find firstname from list of maps userMap where id matches lotMap[index]['userId']
+                                    '${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['firstName']} ${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['lastName']}',
 
                                     style: const TextStyle(
                                       overflow: TextOverflow.ellipsis,

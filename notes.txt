@@ -1,0 +1,28 @@
+TODO TODAY
+
+2. reimplement functions after backend overhaul
+
+3. implement lazy loading with 100 per load
+	pull down to refresh page
+
+4. all logs should be done on api level except authsplash
+	add logs for every single action for production
+
+6. inventory start planning
+
+
+
+
+
+
+
+
+
+
+//todo search all async functions and make sure they dont queue spam due to intermitten connection,,,
+//todo easy migration to reduce possible downtime
+//todo offline invoicing
+//todo receipt printing productiondetailsview
+
+//todo beautify the registration emails
+//remove spaces from  front and end of firstname last name strings and similar strings from registration form
