@@ -106,7 +106,8 @@ class _LeftDrawerState extends State<LeftDrawer> {
                           height: 55,
                           child: TextButton(
                             onPressed: () async {
-                              //Navigator.pushNamed(context, '/auth');
+                              Navigator.pushReplacementNamed(
+                                  context, '/Inventory');
                             },
                             child: Row(
                               children: const [
@@ -145,7 +146,8 @@ class _LeftDrawerState extends State<LeftDrawer> {
                           height: 55,
                           child: TextButton(
                             onPressed: () async {
-                              //Navigator.pushNamed(context, '/auth');
+                              Navigator.pushReplacementNamed(
+                                  context, '/Invoicing');
                             },
                             child: Row(
                               children: const [
@@ -184,7 +186,8 @@ class _LeftDrawerState extends State<LeftDrawer> {
                           height: 55,
                           child: TextButton(
                             onPressed: () async {
-                              //Navigator.pushNamed(context, '/auth');
+                              Navigator.pushReplacementNamed(
+                                  context, '/Accounting');
                             },
                             child: Row(
                               children: const [
@@ -223,7 +226,7 @@ class _LeftDrawerState extends State<LeftDrawer> {
                           height: 55,
                           child: TextButton(
                             onPressed: () async {
-                              //Navigator.pushNamed(context, '/auth');
+                              Navigator.pushReplacementNamed(context, '/Logs');
                             },
                             child: Row(
                               children: const [

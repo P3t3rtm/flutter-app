@@ -36,6 +36,7 @@ class _ProductionAddState extends State<ProductionAdd> {
   }
 
   void setDisplayMap() async {
+    displayMap = {};
     for (var product in productMap) {
       product['textController'] = TextEditingController();
 
@@ -143,9 +144,9 @@ class _ProductionAddState extends State<ProductionAdd> {
           tabAnimationDuration: const Duration(milliseconds: 200),
           tabs: [
             //6 categories currently change 6 numbers
-
             ScrollableListTab(
                 tab: ListTab(
+                    activeBackgroundColor: themeColor,
                     label: Text(
                         cindex > /*CHANGE THIS=================*/ 0
                             ? displayMap.keys
@@ -245,6 +246,7 @@ class _ProductionAddState extends State<ProductionAdd> {
                         ))),
             ScrollableListTab(
                 tab: ListTab(
+                    activeBackgroundColor: themeColor,
                     label: Text(
                         cindex > /*CHANGE THIS=================*/ 1
                             ? displayMap.keys
@@ -344,6 +346,7 @@ class _ProductionAddState extends State<ProductionAdd> {
                         ))),
             ScrollableListTab(
                 tab: ListTab(
+                    activeBackgroundColor: themeColor,
                     label: Text(
                         cindex > /*CHANGE THIS=================*/ 2
                             ? displayMap.keys
@@ -443,6 +446,7 @@ class _ProductionAddState extends State<ProductionAdd> {
                         ))),
             ScrollableListTab(
                 tab: ListTab(
+                    activeBackgroundColor: themeColor,
                     label: Text(
                         cindex > /*CHANGE THIS=================*/ 3
                             ? displayMap.keys
@@ -542,6 +546,7 @@ class _ProductionAddState extends State<ProductionAdd> {
                         ))),
             ScrollableListTab(
                 tab: ListTab(
+                    activeBackgroundColor: themeColor,
                     label: Text(
                         cindex > /*CHANGE THIS=================*/ 4
                             ? displayMap.keys
@@ -640,104 +645,113 @@ class _ProductionAddState extends State<ProductionAdd> {
                           ),
                         ))),
             ScrollableListTab(
-                tab: ListTab(
-                    label: Text(
-                        cindex > /*CHANGE THIS=================*/ 5
-                            ? displayMap.keys
-                                .elementAt(/*CHANGE THIS=================*/ 5)
-                            : '',
-                        style: const TextStyle(fontWeight: FontWeight.w700))),
-                body: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: cindex > /*CHANGE THIS=================*/ 5
-                        ? displayMap.values
+              tab: ListTab(
+                  activeBackgroundColor: themeColor,
+                  label: Text(
+                      cindex > /*CHANGE THIS=================*/ 5
+                          ? displayMap.keys
+                              .elementAt(/*CHANGE THIS=================*/ 5)
+                          : '',
+                      style: const TextStyle(fontWeight: FontWeight.w700))),
+              body: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: cindex > /*CHANGE THIS=================*/ 5
+                    ? displayMap.values
                             .elementAt(/*CHANGE THIS=================*/ 5)
-                            .length
-                        : 0,
-                    itemBuilder: (_, index) => Container(
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(5),
-                                topRight: Radius.circular(5),
-                                bottomLeft: Radius.circular(5),
-                                bottomRight: Radius.circular(5)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 5,
-                                // changes position of shadow (x,y)
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
+                            .length +
+                        1
+                    : 0,
+                itemBuilder: (_, index) {
+                  if (index == displayMap.values.elementAt(5).length) {
+                    return SizedBox(
+                      height: 150,
+                    );
+                  }
+                  return Container(
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                          bottomLeft: Radius.circular(5),
+                          bottomRight: Radius.circular(5)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          // changes position of shadow (x,y)
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    height: 70,
+                    width: queryData.size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //warning icon
+                        Container(
+                          margin: const EdgeInsets.only(left: 15),
+                          child: const Icon(
+                            Icons.shopping_bag,
+                            color: Colors.grey,
+                            size: 30,
                           ),
-                          margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                          height: 70,
-                          width: queryData.size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              //warning icon
-                              Container(
-                                margin: const EdgeInsets.only(left: 15),
-                                child: const Icon(
-                                  Icons.shopping_bag,
-                                  color: Colors.grey,
-                                  size: 30,
-                                ),
-                              ),
-                              Container(
-                                width: queryData.size.width * 0.5 - 15,
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Text(
-                                  displayMap.values.elementAt(
-                                          /*CHANGE THIS=================*/ 5)[
-                                      index]['name'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                ),
-                              ),
-                              //a container with a textfield to add quantity
-                              Container(
-                                width: queryData.size.width * 0.3 - 30,
-                                margin: EdgeInsets.only(
-                                    left: queryData.size.width * 0.1 - 15,
-                                    top: 10,
-                                    bottom: 10),
-                                child: TextField(
-                                  controller: displayMap.values.elementAt(
-                                          /*CHANGE THIS=================*/ 5)[
-                                      index]['textController'],
-
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    labelText: 'Qty',
-                                    counterText: "",
-
-                                    //hide max length indicator
-                                    //labeltext centeralign
-                                  ),
-                                  keyboardType: TextInputType.number,
-                                  //numbers only
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  textAlign: TextAlign.center,
-                                  maxLength: 5,
-                                ),
-                              ),
-                            ],
+                        ),
+                        Container(
+                          width: queryData.size.width * 0.5 - 15,
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Text(
+                            displayMap.values.elementAt(
+                                    /*CHANGE THIS=================*/ 5)[index]
+                                ['name'],
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
                           ),
-                        )))
+                        ),
+                        //a container with a textfield to add quantity
+                        Container(
+                          width: queryData.size.width * 0.3 - 30,
+                          margin: EdgeInsets.only(
+                              left: queryData.size.width * 0.1 - 15,
+                              top: 10,
+                              bottom: 10),
+                          child: TextField(
+                            controller: displayMap.values.elementAt(
+                                    /*CHANGE THIS=================*/ 5)[index]
+                                ['textController'],
+
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 15),
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              labelText: 'Qty',
+                              counterText: "",
+
+                              //hide max length indicator
+                              //labeltext centeralign
+                            ),
+                            keyboardType: TextInputType.number,
+                            //numbers only
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            textAlign: TextAlign.center,
+                            maxLength: 5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

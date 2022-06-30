@@ -19,11 +19,6 @@ class _ProductionViewState extends State<ProductionView> {
 
   @override
   void initState() {
-    productionMap = {};
-    lotMap = [];
-    userMap = [];
-    productMap = [];
-
     userData.currentPage = 'Production';
     super.initState();
     //timer = Timer.periodic(Duration(seconds: 10), (Timer t) {});
@@ -281,11 +276,11 @@ class _ProductionViewState extends State<ProductionView> {
                           height: 70,
                           width: queryData.size.width,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               //warning icon
                               Container(
-                                margin: const EdgeInsets.only(left: 50),
+                                margin: const EdgeInsets.only(left: 25),
                                 child: lotMap[index]['isConfirmed'] == 1
                                     ? Icon(
                                         Icons.check_circle_outline_rounded,
@@ -305,33 +300,63 @@ class _ProductionViewState extends State<ProductionView> {
                                           ),
                               ),
                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 15),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      //'Lot #${lotMap.keys.elementAt(index)} Qty: ${quantityMap.values.elementAt(index)}',
-                                      'Qty: ${lotMap[index]['quantity']}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: queryData.size.width * 0.45,
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: Text(
+                                          'Qty: ${lotMap[index]['quantity']}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15),
+                                        ),
+                                      ),
+                                      lotMap[index]['isConfirmed'] != 0
+                                          ? Text(
+                                              'Lot #${lotMap[index]['id']}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15),
+                                            )
+                                          : Container(),
+                                    ],
                                   ),
                                   const SizedBox(height: 5),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      //find firstname from list of maps userMap where id matches lotMap[index]['userId']
-                                      '${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['firstName']} ${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['lastName']}',
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: queryData.size.width * 0.45,
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: Text(
+                                          //find firstname from list of maps userMap where id matches lotMap[index]['userId']
+                                          '${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['firstName']} ${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['lastName']}',
 
-                                      style: const TextStyle(
-                                        overflow: TextOverflow.ellipsis,
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.w500,
+                                          style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      lotMap[index]['isConfirmed'] != 0
+                                          ? Text(
+                                              //find firstname from list of maps userMap where id matches lotMap[index]['userId']
+                                              '${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['firstName']} ${userMap.firstWhere((user) => user['id'] == lotMap[index]['userID'])['lastName']}',
+
+                                              style: const TextStyle(
+                                                overflow: TextOverflow.ellipsis,
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                          : Container(),
+                                    ],
                                   ),
                                 ],
                               ),

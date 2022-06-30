@@ -7,7 +7,6 @@ import 'package:makemyown/routes/helpers.dart';
 
 class ProductionConfirm extends StatefulWidget {
   const ProductionConfirm({Key? key}) : super(key: key);
-
   @override
   State<ProductionConfirm> createState() => _ProductionConfirmState();
 }
@@ -44,7 +43,7 @@ class _ProductionConfirmState extends State<ProductionConfirm> {
             ),
             onPressed: () {
               userData.currentPage = 'Production Add';
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           ),
         ),

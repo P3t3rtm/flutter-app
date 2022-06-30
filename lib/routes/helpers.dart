@@ -134,7 +134,7 @@ Future<http.Response> fetchlots([lastLot]) async {
 Future<http.Response> fetchproducts() async {
   try {
     return await http.get(
-      Uri.parse('${apiUrl}production/fetchproducts'),
+      Uri.parse('${apiUrl}inventory/fetchproducts'),
       headers: {"api": xapikey, "jwt": userData.jwtToken},
     ).timeout(const Duration(seconds: 5));
   } catch (e) {

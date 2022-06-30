@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
 import 'routes/main/inventory/inventoryaddproduct.dart';
+import 'routes/main/inventory/inventoryeditproduct.dart';
+import 'routes/main/inventory/inventoryproduct.dart';
 import 'routes/main/inventory/inventoryview.dart';
 import 'routes/main/mainpage/welcome.dart';
 import 'routes/main/production/productionadd.dart';
@@ -40,7 +42,9 @@ void main() {
         '/Production Details': (context) => const ProductionDetails(),
 
         '/Inventory': (context) => const InventoryView(),
-        '/Inventory Add Product': (context) => const InventoryAddProduct(),
+        '/Add Product': (context) => const InventoryAddProduct(),
+        '/Edit Product': (context) => const InventoryEditProduct(),
+        '/Product Details': (context) => const InventoryProduct(),
 
         //'/menuitem': (context) => const MenuItemPage(),
 

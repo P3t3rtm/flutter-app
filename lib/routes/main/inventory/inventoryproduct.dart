@@ -1,17 +1,17 @@
 import 'package:makemyown/routes/helpers.dart';
 import 'package:flutter/material.dart';
 
-class InventoryAddProduct extends StatefulWidget {
-  const InventoryAddProduct({Key? key}) : super(key: key);
+class InventoryProduct extends StatefulWidget {
+  const InventoryProduct({Key? key}) : super(key: key);
   @override
-  State<InventoryAddProduct> createState() => _InventoryAddProductState();
+  State<InventoryProduct> createState() => _InventoryProductState();
 }
 
-class _InventoryAddProductState extends State<InventoryAddProduct> {
+class _InventoryProductState extends State<InventoryProduct> {
   @override
   void initState() {
     super.initState();
-    userData.currentPage = 'Add Product';
+    userData.currentPage = 'Product Details';
   }
 
   @override
@@ -25,7 +25,7 @@ class _InventoryAddProductState extends State<InventoryAddProduct> {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Add Product',
+            'Product Details',
           ),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -41,6 +41,18 @@ class _InventoryAddProductState extends State<InventoryAddProduct> {
               Navigator.pop(context);
             },
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.edit_note_rounded,
+                size: 30,
+                color: themeColor,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/Inventory Edit Product');
+              },
+            ),
+          ],
         ),
       ),
     );
