@@ -4,6 +4,8 @@ import 'routes/loginsystem/auth_splash.dart';
 import 'package:flutter/material.dart';
 import 'routes/loginsystem/login_page.dart';
 import 'routes/loginsystem/verifyemail.dart';
+import 'routes/main/inventory/inventoryaddproduct.dart';
+import 'routes/main/inventory/inventoryview.dart';
 import 'routes/main/mainpage/welcome.dart';
 import 'routes/main/production/productionadd.dart';
 import 'routes/main/production/productionconfirm.dart';
@@ -36,6 +38,10 @@ void main() {
         '/Production Add': (context) => const ProductionAdd(),
         '/Production Confirm': (context) => const ProductionConfirm(),
         '/Production Details': (context) => const ProductionDetails(),
+
+        '/Inventory': (context) => const InventoryView(),
+        '/Inventory Add Product': (context) => const InventoryAddProduct(),
+
         //'/menuitem': (context) => const MenuItemPage(),
 
         //'/orders': (context) => const OrdersPage(),

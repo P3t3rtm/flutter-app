@@ -6,86 +6,34 @@ import 'package:flutter/services.dart';
 import 'package:makemyown/routes/helpers.dart';
 import '../sidemenu/drawerleftpage.dart';
 
-class ProductionView extends StatefulWidget {
-  const ProductionView({Key? key}) : super(key: key);
+class InventoryView extends StatefulWidget {
+  const InventoryView({Key? key}) : super(key: key);
   @override
-  State<ProductionView> createState() => _ProductionViewState();
+  State<InventoryView> createState() => _InventoryViewState();
 }
 
-class _ProductionViewState extends State<ProductionView> {
-  //late Timer timer;
-  final ScrollController _sc = ScrollController();
-  bool isLoading = false;
+class _InventoryViewState extends State<InventoryView> {
+  var displayMap = {};
+  int cindex = 0;
 
   @override
   void initState() {
-    productionMap = {};
-    lotMap = [];
-    userMap = [];
     productMap = [];
 
-    userData.currentPage = 'Production';
+    userData.currentPage = 'Inventory';
     super.initState();
-    //timer = Timer.periodic(Duration(seconds: 10), (Timer t) {});
-    _sc.addListener(() {
-      if (_sc.position.pixels == _sc.position.maxScrollExtent) {
-        _getMoreData();
-      }
-    });
     fetchdata();
   }
 
   @override
   void dispose() {
-    //timer.cancel();
-    _sc.dispose();
+    for (var product in productMap) {
+      product['textController'].dispose();
+    }
     super.dispose();
   }
 
   void fetchdata() async {
-    final fetchLotResponse = await fetchlots();
-    if (fetchLotResponse.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Failure to fetch lots.'),
-        duration: Duration(seconds: 2),
-      ));
-      return;
-    }
-    //populate lotMap with lots from fetchLotResponse
-    lotMap = json.decode(fetchLotResponse.body);
-
-    //foreach lot in lotMap, fetch its productions
-    for (var lot in lotMap) {
-      final fetchProductionResponse = await fetchproduction(lot['id']);
-      if (fetchProductionResponse.statusCode != 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Failure to fetch production.'),
-          duration: Duration(seconds: 2),
-        ));
-        return;
-      }
-      productionMap[lot['id']] = json.decode(fetchProductionResponse.body);
-    }
-    //sum up production quantities using lotNumber
-    for (var lot in lotMap) {
-      num sum = 0;
-      for (var production in productionMap[lot['id']]) {
-        sum += production['quantity'];
-      }
-      lot['quantity'] = sum;
-    }
-
-    final fetchUserResponse = await httpfetchusers();
-    if (fetchUserResponse.statusCode != 200) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Failure to fetch users.'),
-        duration: Duration(seconds: 2),
-      ));
-      return;
-    }
-    //populate userMap with users from fetchUserResponse
-    userMap = json.decode(fetchUserResponse.body);
-
     //fetch products
     final fetchProductResponse = await fetchproducts();
     if (fetchProductResponse.statusCode != 200) {
@@ -97,65 +45,22 @@ class _ProductionViewState extends State<ProductionView> {
     }
     //populate products from fetchProductResponse
     productMap = json.decode(fetchProductResponse.body);
-
-    setState(() {});
+    setDisplayMap();
   }
 
-  void _getMoreData() async {
-    if (!isLoading) {
-      setState(() {
-        isLoading = true;
-      });
-      final fetchLotResponse = await fetchlots(lotMap.last['id']);
-      if (fetchLotResponse.statusCode != 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Failure to fetch lots.'),
-          duration: Duration(seconds: 2),
-        ));
-        return;
-      }
-      //populate lotMap with lots from fetchLotResponse
-      var newLotMap = json.decode(fetchLotResponse.body);
+  void setDisplayMap() async {
+    for (var product in productMap) {
+      product['textController'] = TextEditingController();
 
-      //foreach lot in lotMap, fetch its productions
-      for (var lot in newLotMap) {
-        final fetchProductionResponse = await fetchproduction(lot['id']);
-        if (fetchProductionResponse.statusCode != 200) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Failure to fetch production.'),
-            duration: Duration(seconds: 2),
-          ));
-          return;
-        }
-        productionMap[lot['id']] = json.decode(fetchProductionResponse.body);
+      if (displayMap.containsKey(product['category'])) {
+        displayMap[product['category']].add(product);
+      } else {
+        //used to track the category of the map, used for .elementAt()
+        cindex++;
+        displayMap[product['category']] = [product];
       }
-      //sum up production quantities using lotNumber
-      for (var lot in newLotMap) {
-        num sum = 0;
-        for (var production in productionMap[lot['id']]) {
-          sum += production['quantity'];
-        }
-        lot['quantity'] = sum;
-      }
-
-      lotMap.addAll(newLotMap);
     }
-
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  Widget _buildProgressIndicator() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Center(
-        child: Opacity(
-          opacity: isLoading ? 1.0 : 00,
-          child: const CircularProgressIndicator(),
-        ),
-      ),
-    );
+    setState(() {});
   }
 
   @override
@@ -170,7 +75,7 @@ class _ProductionViewState extends State<ProductionView> {
           //add a floatingactionbutton to push to productionadd page
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/Production Add');
+              Navigator.of(context).pushNamed('/Inventory Add Product');
             },
             backgroundColor: themeColor,
             child: const Icon(
@@ -186,7 +91,6 @@ class _ProductionViewState extends State<ProductionView> {
               });
             },
             child: CustomScrollView(
-              controller: _sc,
               slivers: <Widget>[
                 SliverAppBar(
                   forceElevated: true,
@@ -242,12 +146,9 @@ class _ProductionViewState extends State<ProductionView> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     //childCount should be size of lotMap
-                    childCount: lotMap.length + 1,
+                    childCount: lotMap.length,
 
                     (BuildContext context, int index) {
-                      if (index == lotMap.length) {
-                        return _buildProgressIndicator();
-                      }
                       //make the following container a tapable card
                       return GestureDetector(
                         onTap: () {
