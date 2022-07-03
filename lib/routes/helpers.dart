@@ -107,6 +107,7 @@ CurrentUser userData = CurrentUser(
   false,
   false,
   0,
+  0,
 );
 
 Future<http.Response> fetchproduction(lotNumber) async {
@@ -156,7 +157,8 @@ class CurrentUser {
   bool accessInventory;
   bool accessInvoicing;
   bool accessAccounting;
-  int currentLot;
+  int currentLot; //used at productionview to carry over tapped lot
+  int currentProduct; //used at inventoryview to carry over tapped product
 
   CurrentUser(
     this.firstName,
@@ -173,5 +175,6 @@ class CurrentUser {
     this.accessInvoicing,
     this.accessAccounting,
     this.currentLot,
+    this.currentProduct,
   );
 }

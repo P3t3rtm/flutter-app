@@ -7,7 +7,10 @@ class InventoryProduct extends StatefulWidget {
   State<InventoryProduct> createState() => _InventoryProductState();
 }
 
+//todo allow editing of all fields except id
+
 class _InventoryProductState extends State<InventoryProduct> {
+  bool isEditing = false;
   @override
   void initState() {
     super.initState();
@@ -43,13 +46,20 @@ class _InventoryProductState extends State<InventoryProduct> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(
-                Icons.edit_note_rounded,
-                size: 30,
-                color: themeColor,
-              ),
+              icon: isEditing
+                  ? Icon(
+                      Icons.save_as_outlined,
+                      size: 30,
+                      color: themeColor,
+                    )
+                  : Icon(
+                      Icons.mode_edit_outlined,
+                      size: 30,
+                      color: themeColor,
+                    ),
               onPressed: () {
-                Navigator.of(context).pushNamed('/Inventory Edit Product');
+                isEditing = !isEditing;
+                setState(() {});
               },
             ),
           ],

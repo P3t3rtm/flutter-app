@@ -70,7 +70,7 @@ class _InventoryViewState extends State<InventoryView> {
           //add a floatingactionbutton to push to productionadd page
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/Inventory Add Product');
+              Navigator.of(context).pushNamed('/Add Product');
             },
             backgroundColor: themeColor,
             child: const Icon(
@@ -138,69 +138,80 @@ class _InventoryViewState extends State<InventoryView> {
                                 .elementAt(/*CHANGE THIS=================*/ 0)
                                 .length
                             : 0,
-                        itemBuilder: (_, index) => Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    // changes position of shadow (x,y)
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                              height: 70,
-                              width: queryData.size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //warning icon
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 15),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.grey,
-                                      size: 30,
+                        itemBuilder: (_, index) => GestureDetector(
+                              onTap: () {
+                                userData.currentProduct = displayMap.values
+                                        .elementAt(
+                                            /*CHANGE THIS=================*/ 0)[
+                                    index]['id'];
+                                Navigator.pushNamed(
+                                    context, '/Product Details');
+                              },
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      // changes position of shadow (x,y)
+                                      offset: const Offset(0, 3),
                                     ),
-                                  ),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      displayMap.values.elementAt(
-                                              /*CHANGE THIS=================*/ 0)[
-                                          index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                  ],
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                height: 70,
+                                width: queryData.size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    //warning icon
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 15),
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  //a container with a textfield to add quantity
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: queryData.size.width * 0.1,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      displayMap.values
-                                          .elementAt(/*CHANGE THIS=================*/ 0)[
-                                              index]['quantity']
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                    Container(
+                                      width: queryData.size.width * 0.5 - 15,
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        displayMap.values.elementAt(
+                                                /*CHANGE THIS=================*/ 0)[
+                                            index]['name'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //a container with a textfield to add quantity
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: queryData.size.width * 0.1,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Text(
+                                        displayMap.values
+                                            .elementAt(/*CHANGE THIS=================*/ 0)[
+                                                index]['quantity']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ))),
                 ScrollableListTab(
@@ -221,69 +232,80 @@ class _InventoryViewState extends State<InventoryView> {
                                 .elementAt(/*CHANGE THIS=================*/ 1)
                                 .length
                             : 0,
-                        itemBuilder: (_, index) => Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    // changes position of shadow (x,y)
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                              height: 70,
-                              width: queryData.size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //warning icon
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 15),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.grey,
-                                      size: 30,
+                        itemBuilder: (_, index) => GestureDetector(
+                              onTap: () {
+                                userData.currentProduct = displayMap.values
+                                        .elementAt(
+                                            /*CHANGE THIS=================*/ 1)[
+                                    index]['id'];
+                                Navigator.pushNamed(
+                                    context, '/Product Details');
+                              },
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      // changes position of shadow (x,y)
+                                      offset: const Offset(0, 3),
                                     ),
-                                  ),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      displayMap.values.elementAt(
-                                              /*CHANGE THIS=================*/ 1)[
-                                          index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                  ],
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                height: 70,
+                                width: queryData.size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    //warning icon
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 15),
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  //a container with a textfield to add quantity
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: queryData.size.width * 0.1,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      displayMap.values
-                                          .elementAt(/*CHANGE THIS=================*/ 1)[
-                                              index]['quantity']
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                    Container(
+                                      width: queryData.size.width * 0.5 - 15,
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        displayMap.values.elementAt(
+                                                /*CHANGE THIS=================*/ 1)[
+                                            index]['name'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //a container with a textfield to add quantity
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: queryData.size.width * 0.1,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Text(
+                                        displayMap.values
+                                            .elementAt(/*CHANGE THIS=================*/ 1)[
+                                                index]['quantity']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ))),
                 ScrollableListTab(
@@ -304,69 +326,80 @@ class _InventoryViewState extends State<InventoryView> {
                                 .elementAt(/*CHANGE THIS=================*/ 2)
                                 .length
                             : 0,
-                        itemBuilder: (_, index) => Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    // changes position of shadow (x,y)
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                              height: 70,
-                              width: queryData.size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //warning icon
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 15),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.grey,
-                                      size: 30,
+                        itemBuilder: (_, index) => GestureDetector(
+                              onTap: () {
+                                userData.currentProduct = displayMap.values
+                                        .elementAt(
+                                            /*CHANGE THIS=================*/ 2)[
+                                    index]['id'];
+                                Navigator.pushNamed(
+                                    context, '/Product Details');
+                              },
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      // changes position of shadow (x,y)
+                                      offset: const Offset(0, 3),
                                     ),
-                                  ),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      displayMap.values.elementAt(
-                                              /*CHANGE THIS=================*/ 2)[
-                                          index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                  ],
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                height: 70,
+                                width: queryData.size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    //warning icon
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 15),
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  //a container with a textfield to add quantity
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: queryData.size.width * 0.1,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      displayMap.values
-                                          .elementAt(/*CHANGE THIS=================*/ 2)[
-                                              index]['quantity']
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                    Container(
+                                      width: queryData.size.width * 0.5 - 15,
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        displayMap.values.elementAt(
+                                                /*CHANGE THIS=================*/ 2)[
+                                            index]['name'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //a container with a textfield to add quantity
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: queryData.size.width * 0.1,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Text(
+                                        displayMap.values
+                                            .elementAt(/*CHANGE THIS=================*/ 2)[
+                                                index]['quantity']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ))),
                 ScrollableListTab(
@@ -387,69 +420,80 @@ class _InventoryViewState extends State<InventoryView> {
                                 .elementAt(/*CHANGE THIS=================*/ 3)
                                 .length
                             : 0,
-                        itemBuilder: (_, index) => Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    // changes position of shadow (x,y)
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                              height: 70,
-                              width: queryData.size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //warning icon
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 15),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.grey,
-                                      size: 30,
+                        itemBuilder: (_, index) => GestureDetector(
+                              onTap: () {
+                                userData.currentProduct = displayMap.values
+                                        .elementAt(
+                                            /*CHANGE THIS=================*/ 3)[
+                                    index]['id'];
+                                Navigator.pushNamed(
+                                    context, '/Product Details');
+                              },
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      // changes position of shadow (x,y)
+                                      offset: const Offset(0, 3),
                                     ),
-                                  ),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      displayMap.values.elementAt(
-                                              /*CHANGE THIS=================*/ 3)[
-                                          index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                  ],
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                height: 70,
+                                width: queryData.size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    //warning icon
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 15),
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  //a container with a textfield to add quantity
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: queryData.size.width * 0.1,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      displayMap.values
-                                          .elementAt(/*CHANGE THIS=================*/ 3)[
-                                              index]['quantity']
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                    Container(
+                                      width: queryData.size.width * 0.5 - 15,
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        displayMap.values.elementAt(
+                                                /*CHANGE THIS=================*/ 3)[
+                                            index]['name'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //a container with a textfield to add quantity
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: queryData.size.width * 0.1,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Text(
+                                        displayMap.values
+                                            .elementAt(/*CHANGE THIS=================*/ 3)[
+                                                index]['quantity']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ))),
                 ScrollableListTab(
@@ -470,69 +514,80 @@ class _InventoryViewState extends State<InventoryView> {
                                 .elementAt(/*CHANGE THIS=================*/ 4)
                                 .length
                             : 0,
-                        itemBuilder: (_, index) => Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5),
-                                    topRight: Radius.circular(5),
-                                    bottomLeft: Radius.circular(5),
-                                    bottomRight: Radius.circular(5)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 5,
-                                    // changes position of shadow (x,y)
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                              height: 70,
-                              width: queryData.size.width,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  //warning icon
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 15),
-                                    child: const Icon(
-                                      Icons.shopping_bag,
-                                      color: Colors.grey,
-                                      size: 30,
+                        itemBuilder: (_, index) => GestureDetector(
+                              onTap: () {
+                                userData.currentProduct = displayMap.values
+                                        .elementAt(
+                                            /*CHANGE THIS=================*/ 4)[
+                                    index]['id'];
+                                Navigator.pushNamed(
+                                    context, '/Product Details');
+                              },
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(5),
+                                      topRight: Radius.circular(5),
+                                      bottomLeft: Radius.circular(5),
+                                      bottomRight: Radius.circular(5)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      // changes position of shadow (x,y)
+                                      offset: const Offset(0, 3),
                                     ),
-                                  ),
-                                  Container(
-                                    width: queryData.size.width * 0.5 - 15,
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: Text(
-                                      displayMap.values.elementAt(
-                                              /*CHANGE THIS=================*/ 4)[
-                                          index]['name'],
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15),
+                                  ],
+                                ),
+                                margin:
+                                    const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                                height: 70,
+                                width: queryData.size.width,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    //warning icon
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 15),
+                                      child: const Icon(
+                                        Icons.shopping_bag,
+                                        color: Colors.grey,
+                                        size: 30,
+                                      ),
                                     ),
-                                  ),
-                                  //a container with a textfield to add quantity
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: queryData.size.width * 0.1,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: Text(
-                                      displayMap.values
-                                          .elementAt(/*CHANGE THIS=================*/ 4)[
-                                              index]['quantity']
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                                    Container(
+                                      width: queryData.size.width * 0.5 - 15,
+                                      padding: const EdgeInsets.only(left: 15),
+                                      child: Text(
+                                        displayMap.values.elementAt(
+                                                /*CHANGE THIS=================*/ 4)[
+                                            index]['name'],
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    //a container with a textfield to add quantity
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: queryData.size.width * 0.1,
+                                          top: 10,
+                                          bottom: 10),
+                                      child: Text(
+                                        displayMap.values
+                                            .elementAt(/*CHANGE THIS=================*/ 4)[
+                                                index]['quantity']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ))),
                 ScrollableListTab(
@@ -559,67 +614,76 @@ class _InventoryViewState extends State<InventoryView> {
                           height: 150,
                         );
                       }
-                      return Container(
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              topRight: Radius.circular(5),
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              // changes position of shadow (x,y)
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                        height: 70,
-                        width: queryData.size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            //warning icon
-                            Container(
-                              margin: const EdgeInsets.only(left: 15),
-                              child: const Icon(
-                                Icons.shopping_bag,
-                                color: Colors.grey,
-                                size: 30,
+                      return GestureDetector(
+                        onTap: () {
+                          userData.currentProduct = displayMap.values.elementAt(
+                              /*CHANGE THIS=================*/ 5)[index]['id'];
+                          Navigator.pushNamed(context, '/Product Details');
+                        },
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(5),
+                                topRight: Radius.circular(5),
+                                bottomLeft: Radius.circular(5),
+                                bottomRight: Radius.circular(5)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                // changes position of shadow (x,y)
+                                offset: const Offset(0, 3),
                               ),
-                            ),
-                            Container(
-                              width: queryData.size.width * 0.5 - 15,
-                              padding: const EdgeInsets.only(left: 15),
-                              child: Text(
-                                displayMap.values.elementAt(
-                                        /*CHANGE THIS=================*/ 5)[
-                                    index]['name'],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
+                            ],
+                          ),
+                          margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                          height: 70,
+                          width: queryData.size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              //warning icon
+                              Container(
+                                margin: const EdgeInsets.only(left: 15),
+                                child: const Icon(
+                                  Icons.shopping_bag,
+                                  color: Colors.grey,
+                                  size: 30,
+                                ),
                               ),
-                            ),
-                            //a container with a textfield to add quantity
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: queryData.size.width * 0.1,
-                                  top: 10,
-                                  bottom: 10),
-                              child: Text(
-                                displayMap.values
-                                    .elementAt(/*CHANGE THIS=================*/ 5)[
-                                        index]['quantity']
-                                    .toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              Container(
+                                width: queryData.size.width * 0.5 - 15,
+                                padding: const EdgeInsets.only(left: 15),
+                                child: Text(
+                                  displayMap.values.elementAt(
+                                          /*CHANGE THIS=================*/ 5)[
+                                      index]['name'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
                               ),
-                            ),
-                          ],
+                              //a container with a textfield to add quantity
+                              Container(
+                                margin: EdgeInsets.only(
+                                    left: queryData.size.width * 0.1,
+                                    top: 10,
+                                    bottom: 10),
+                                child: Text(
+                                  displayMap.values
+                                      .elementAt(/*CHANGE THIS=================*/ 5)[
+                                          index]['quantity']
+                                      .toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

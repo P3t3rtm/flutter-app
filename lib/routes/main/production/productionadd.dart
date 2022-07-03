@@ -663,8 +663,11 @@ class _ProductionAddState extends State<ProductionAdd> {
                         1
                     : 0,
                 itemBuilder: (_, index) {
-                  if (index == displayMap.values.elementAt(5).length) {
-                    return SizedBox(
+                  if (index ==
+                      displayMap.values
+                          .elementAt(/*CHANGE THIS=================*/ 5)
+                          .length) {
+                    return const SizedBox(
                       height: 150,
                     );
                   }
